@@ -3,6 +3,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+*.tsv
+*.txt
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
@@ -33,6 +36,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.idea/
+
+
 
 ### Mac OS ###
 .DS_Store

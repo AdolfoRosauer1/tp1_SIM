@@ -175,7 +175,7 @@ public class CellIndexMethodSimulation extends JPanel {
 
     public static void main(String[] args) {
         double L = 20;
-        double rc = 1;
+        double rc = 5;
         int N = 100; // Number of particles
         boolean periodicBoundary = true; // Can be changed to false for non-periodic boundary
 

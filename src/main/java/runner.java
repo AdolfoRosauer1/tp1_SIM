@@ -4,9 +4,9 @@ import java.io.IOException;
 public class runner {
     public static void main(String[] args) {
 
-        double L = 50;
-        int N = 5000;
-        double rc = 3;
+        double L = 100;
+        int N = 200;
+        double rc = 15;
 
         CellIndexMethod md = new CellIndexMethod(L,N,rc)
                 .generateRandomParticles()
@@ -37,8 +37,9 @@ public class runner {
     }
 
     private static void createParticlesFile(CellIndexMethod md) {
-        try (FileWriter writer = new FileWriter("static_particles.tsv")) {
-            writer.write("id\tposx\tposy\n");
+        try (FileWriter writer = new FileWriter("static_particles.txt")) {
+            writer.write(String.format("%d\n%f\n",md.N,md.L));
+//            writer.write("id\tposx\tposy\n");
             for (Particle particle : md.getParticles()) {
                 writer.write(String.format("%d\t%f\t%f\n", particle.id, particle.x, particle.y));
             }

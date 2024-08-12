@@ -38,6 +38,8 @@ build/
 .vscode/
 
 .idea/
+.idea
+/.idea/
 
 
 

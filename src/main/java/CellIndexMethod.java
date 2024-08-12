@@ -121,6 +121,7 @@ public class CellIndexMethod {
                 double distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance <= rc) {
                     neighbors.get(p1.id).add(p2);
+                    neighbors.get(p2.id).add(p1);
                 }
             }
         }

@@ -9,6 +9,7 @@ public class CellIndexMethod {
     private int M;
     final int N;
     private Cell[][] cells;
+    private double maxParticleRadius;
 
     CellIndexMethod(List<Particle> particles, double L, int M, int N, double rc) {
         this.particles = particles;
@@ -20,6 +21,7 @@ public class CellIndexMethod {
         for (int i = 0; i < N; i++) {
             this.neighbors.put(i, new HashSet<>());
         }
+        this.maxParticleRadius = findMaxRadius(particles);
     }
 
     CellIndexMethod(double L, int N, double rc) {
@@ -31,6 +33,7 @@ public class CellIndexMethod {
             this.neighbors.put(i, new HashSet<>());
         }
         this.generateIdealM();
+        this.maxParticleRadius = 0;
     }
 
     CellIndexMethod(double L, int N, double rc, int M) {
@@ -42,6 +45,7 @@ public class CellIndexMethod {
         for (int i = 0; i < N; i++) {
             this.neighbors.put(i, new HashSet<>());
         }
+        this.maxParticleRadius = 0;
     }
 
     CellIndexMethod generateRandomParticles() {
@@ -56,27 +60,38 @@ public class CellIndexMethod {
         return this;
     }
 
-    CellIndexMethod generateRandomParticles(double radius) {
+    private double findMaxRadius(List<Particle> particles) {
+        return particles.stream()
+                .mapToDouble(p -> p.radius)
+                .max()
+                .orElse(0);
+    }
+
+    CellIndexMethod generateRandomParticles(double maxRadius) {
         List<Particle> toSet = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < N; i++) {
             double x = random.nextDouble() * L;
             double y = random.nextDouble() * L;
+            double radius = random.nextDouble() * maxRadius;
             toSet.add(new Particle(i, x, y, radius));
         }
         particles = toSet;
+        this.maxParticleRadius = maxRadius;
+        if (!checkMValue()){
+            generateIdealM();
+        }
         return this;
     }
 
     private boolean checkMValue() {
-        return (L / M) >= rc;
+        return (L / M) >= (rc + 2 * maxParticleRadius);
     }
 
     void generateIdealM() {
-        int maxM = (int) (L / rc);
+        int maxM = (int) (L / (rc + 2 * maxParticleRadius));
         // Ensure M is at least 1
         M = Math.max(1, maxM);
-        return;
     }
 
     long runSimulation() {

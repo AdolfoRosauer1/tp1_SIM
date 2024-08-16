@@ -13,7 +13,7 @@ public class runner {
 //        compareBruteForce(iterations, minN, minL, minRc);
 
         CellIndexMethod md = new CellIndexMethod(minL, minN, minRc)
-                .generateRandomParticles();
+                .generateRandomParticles(25);
 
 //        md.runSimulation();
 

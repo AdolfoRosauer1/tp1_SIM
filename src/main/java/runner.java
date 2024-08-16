@@ -5,10 +5,10 @@ import java.util.Random;
 public class runner {
     public static void main(String[] args) {
 
-        int iterations = 250;
-        int minN = 750;
-        double minL = 500;
-        double minRc = 5;
+        int iterations = 500;
+        int minN = 5;
+        double minL = 20;
+        double minRc = 1;
 
         compareBruteForceNoRandom(iterations, minN, minL, minRc);
 
@@ -82,12 +82,11 @@ public class runner {
             Random rand = new Random();
             for (int i = 0; i < iterations; i++) {
                 // Generate random configurations
-                int N = minN + rand.nextInt(minN*2);
-                int M = Math.max(1, rand.nextInt(maxM));
+                int N = minN + rand.nextInt(minN*50);
 
                 // Create CellIndexMethod instances
-                CellIndexMethod md = new CellIndexMethod(L, N, rc, M).generateRandomParticles();
-                CellIndexMethod md2 = new CellIndexMethod(L, N, rc, 1).generateRandomParticles();
+                CellIndexMethod md = new CellIndexMethod(L, N, rc).generateRandomParticles(0.25);
+                CellIndexMethod md2 = new CellIndexMethod(L, N, rc, 1).generateRandomParticles(0.25);
 
                 double runtimeDiff;
 

@@ -5,22 +5,22 @@ import java.util.Random;
 public class runner {
     public static void main(String[] args) {
 
-        int iterations = 50;
-        int minN = 500;
+        int iterations = 250;
+        int minN = 750;
         double minL = 500;
-        double minRc = 50;
+        double minRc = 5;
 
-//        compareBruteForce(iterations, minN, minL, minRc);
+        compareBruteForceNoRandom(iterations, minN, minL, minRc);
 
-        CellIndexMethod md = new CellIndexMethod(minL, minN, minRc)
-                .generateRandomParticles(25);
+//        CellIndexMethod md = new CellIndexMethod(minL, minN, minRc)
+//                .generateRandomParticles(25);
 
 //        md.runSimulation();
 
-        md.runSimulationWithWalls();
+//        md.runSimulationWithWalls();
 
-        createNeighborsFile(md);
-        createParticlesFile(md);
+//        createNeighborsFile(md);
+//        createParticlesFile(md);
 
     }
 
@@ -59,6 +59,52 @@ public class runner {
 
                 // Record the result in the CSV file
                 csvWriter.append(String.format("%d,%d,%f,%.2f,%f\n", i + 1, N, L, rc, runtimeDiff));
+            }
+
+            csvWriter.flush();
+            csvWriter.close();
+
+            System.out.println("Test completed. Results saved to " + fileName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void compareBruteForceNoRandom(int iterations, int minN, double L, double rc){
+        String fileName = "cell_index_method_results.csv";
+        FileWriter csvWriter = null;
+        try {
+            csvWriter = new FileWriter(fileName);
+            csvWriter.append("Configuration,N,L,M,rc,RuntimeDiff_ns\n");
+
+            int maxM = (int) (L / (rc));
+
+            Random rand = new Random();
+            for (int i = 0; i < iterations; i++) {
+                // Generate random configurations
+                int N = minN + rand.nextInt(minN*2);
+                int M = Math.max(1, rand.nextInt(maxM));
+
+                // Create CellIndexMethod instances
+                CellIndexMethod md = new CellIndexMethod(L, N, rc, M).generateRandomParticles();
+                CellIndexMethod md2 = new CellIndexMethod(L, N, rc, 1).generateRandomParticles();
+
+                double runtimeDiff;
+
+                // Alternate the order of execution
+                if (rand.nextBoolean()) {
+                    double runtime2 = (double) md2.runSimulation() /1_000_000;
+                    double runtime = (double) md.runSimulation() /1_000_000;
+                    runtimeDiff = runtime2 - runtime;
+                } else {
+                    double runtime = (double) md.runSimulation() /1_000_000;
+                    double runtime2 = (double) md2.runSimulation() /1_000_000;
+                    runtimeDiff = runtime2 - runtime;
+                }
+                System.out.println(runtimeDiff);
+
+                // Record the result in the CSV file
+                csvWriter.append(String.format("%d,%d,%f,%d,%.2f,%f\n", i + 1, N, L, maxM, rc, runtimeDiff));
             }
 
             csvWriter.flush();

@@ -73,8 +73,8 @@ public class CellIndexMethod {
         for (int i = 0; i < N; i++) {
             double x = random.nextDouble() * L;
             double y = random.nextDouble() * L;
-            double radius = random.nextDouble() * maxRadius;
-            toSet.add(new Particle(i, x, y, radius));
+//            double radius = random.nextDouble() * maxRadius;
+            toSet.add(new Particle(i, x, y, maxRadius));
         }
         particles = toSet;
         this.maxParticleRadius = maxRadius;

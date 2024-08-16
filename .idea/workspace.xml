@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8d1bbb4-9889-4c6e-9155-1634ba600a6c" name="Changes" comment="lots of upgrades">
+    <list default="true" id="a8d1bbb4-9889-4c6e-9155-1634ba600a6c" name="Changes" comment="particle radius and M upgrade">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CellIndexMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CellIndexMethod.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/runner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/runner.java" afterDir="false" />
@@ -103,7 +103,8 @@
       <workItem from="1723499549412" duration="3706000" />
       <workItem from="1723504844001" duration="5000" />
       <workItem from="1723656588560" duration="3263000" />
-      <workItem from="1723778578959" duration="1748000" />
+      <workItem from="1723778578959" duration="2187000" />
+      <workItem from="1723819462126" duration="2001000" />
     </task>
     <task id="LOCAL-00001" summary="super commit">
       <option name="closed" value="true" />
@@ -137,7 +138,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723779732176</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="particle radius and M upgrade">
+      <option name="closed" value="true" />
+      <created>1723780443198</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1723780443198</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,6 +168,7 @@
     <MESSAGE value="self implementation" />
     <MESSAGE value="fixed it + output files for viz" />
     <MESSAGE value="lots of upgrades" />
-    <option name="LAST_COMMIT_MESSAGE" value="lots of upgrades" />
+    <MESSAGE value="particle radius and M upgrade" />
+    <option name="LAST_COMMIT_MESSAGE" value="particle radius and M upgrade" />
   </component>
 </project>

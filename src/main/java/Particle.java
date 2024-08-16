@@ -13,5 +13,6 @@ public class Particle {
         this.id = id;
         this.x = x;
         this.y = y;
+        this.radius = 0;
     }
 }

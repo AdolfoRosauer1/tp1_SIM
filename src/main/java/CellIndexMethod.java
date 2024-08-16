@@ -30,6 +30,18 @@ public class CellIndexMethod {
         for (int i = 0; i < N; i++) {
             this.neighbors.put(i, new HashSet<>());
         }
+        this.generateIdealM();
+    }
+
+    CellIndexMethod(double L, int N, double rc, int M) {
+        this.L = L;
+        this.N = N;
+        this.rc = rc;
+        this.M = M;
+        this.neighbors = new HashMap<>(N);
+        for (int i = 0; i < N; i++) {
+            this.neighbors.put(i, new HashSet<>());
+        }
     }
 
     CellIndexMethod generateRandomParticles() {
@@ -44,15 +56,27 @@ public class CellIndexMethod {
         return this;
     }
 
+    CellIndexMethod generateRandomParticles(double radius) {
+        List<Particle> toSet = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < N; i++) {
+            double x = random.nextDouble() * L;
+            double y = random.nextDouble() * L;
+            toSet.add(new Particle(i, x, y, radius));
+        }
+        particles = toSet;
+        return this;
+    }
+
     private boolean checkMValue() {
         return (L / M) >= rc;
     }
 
-    CellIndexMethod generateIdealM() {
+    void generateIdealM() {
         int maxM = (int) (L / rc);
         // Ensure M is at least 1
         M = Math.max(1, maxM);
-        return this;
+        return;
     }
 
     long runSimulation() {
@@ -68,6 +92,9 @@ public class CellIndexMethod {
         long endTime = System.nanoTime();  // End time in nanoseconds
 
         long duration = endTime - startTime;  // Calculate the duration
+        double milliseconds = (double) duration /1_000_000;
+//        System.out.printf("N: %d, L: %f, M: %d, rc: %f\tDuration(ms): %f\n", N, L, M, rc, milliseconds);
+
         return duration;  // Return the duration in nanoseconds
     }
 
@@ -119,7 +146,58 @@ public class CellIndexMethod {
                 dy = Math.min(dy, L - dy);
 
                 double distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance <= rc) {
+                if (distance <= rc + p1.radius + p2.radius){
+                    neighbors.get(p1.id).add(p2);
+                    neighbors.get(p2.id).add(p1);
+                }
+            }
+        }
+    }
+
+    long runSimulationWithWalls() {
+        long startTime = System.nanoTime();
+
+        if (!checkMValue()) {
+            throw new RuntimeException("Invalid M value. The condition L/M >= rc must be satisfied");
+        }
+        createCells();
+        assignParticlesToCells();
+        calculateNeighborsWithWalls();
+
+        long endTime = System.nanoTime();
+        long duration = endTime - startTime;
+        double milliseconds = (double) duration / 1_000_000;
+        // System.out.printf("N: %d, L: %f, M: %d, rc: %f\tDuration(ms): %f\n", N, L, M, rc, milliseconds);
+
+        return duration;
+    }
+
+    private void calculateNeighborsWithWalls() {
+        for (int i = 0; i < M; i++) {
+            for (int j = 0; j < M; j++) {
+                for (Particle p1 : cells[i][j].particles) {
+                    // Check neighbors in current cell
+                    checkNeighborsInCellWithWalls(p1, i, j);
+
+                    // Check neighbors in adjacent cells (top-right L shape and bottom-right)
+                    if (j < M - 1) checkNeighborsInCellWithWalls(p1, i, j + 1); // Top
+                    if (i < M - 1 && j < M - 1) checkNeighborsInCellWithWalls(p1, i + 1, j + 1); // Top-right
+                    if (i < M - 1) checkNeighborsInCellWithWalls(p1, i + 1, j); // Right
+                    if (i < M - 1 && j > 0) checkNeighborsInCellWithWalls(p1, i + 1, j - 1); // Bottom-right
+                }
+            }
+        }
+    }
+
+    private void checkNeighborsInCellWithWalls(Particle p1, int cellX, int cellY) {
+        for (Particle p2 : cells[cellX][cellY].particles) {
+            if (p1.id != p2.id) {
+                double dx = Math.abs(p1.x - p2.x);
+                double dy = Math.abs(p1.y - p2.y);
+
+                // No periodic boundary conditions applied
+                double distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance <= rc + p1.radius + p2.radius) {
                     neighbors.get(p1.id).add(p2);
                     neighbors.get(p2.id).add(p1);
                 }

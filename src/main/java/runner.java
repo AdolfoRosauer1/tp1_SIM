@@ -5,8 +5,8 @@ import java.util.Random;
 public class runner {
     public static void main(String[] args) {
 
-        int iterations = 500;
-        int minN = 5;
+        int iterations = 100;
+        int minN = 2;
         double minL = 20;
         double minRc = 1;
 
@@ -82,7 +82,7 @@ public class runner {
             Random rand = new Random();
             for (int i = 0; i < iterations; i++) {
                 // Generate random configurations
-                int N = minN + rand.nextInt(minN*50);
+                int N = minN + i;
 
                 // Create CellIndexMethod instances
                 CellIndexMethod md = new CellIndexMethod(L, N, rc).generateRandomParticles(0.25);
